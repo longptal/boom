@@ -1,11 +1,15 @@
 package uet.oop.bomberman.entities.character.enemy.ai;
 
+import uet.oop.bomberman.entities.character.Direction;
+
+import java.util.Random;
+
 public class AILow extends AI {
 
 	@Override
-	public int calculateDirection() {
+	public Direction calculateDirection() {
 		// TODO: cài đặt thuật toán tìm đường đi
-		return 1;
+		return Direction.getDirectionFromInt(new Random().nextInt(4));
 	}
 
 }

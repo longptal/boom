@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
+import uet.oop.bomberman.entities.character.Direction;
 import uet.oop.bomberman.entities.character.enemy.ai.AILow;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -19,7 +20,8 @@ public class Balloon extends Enemy {
 
 	@Override
 	protected void chooseSprite() {
-		switch(_direction) {
+		int dir = Direction.getIntFromDirection(_direction);
+		switch(dir) {
 			case 0:
 			case 1:
 					_sprite = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, _animate, 60);

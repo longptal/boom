@@ -1,5 +1,6 @@
 package uet.oop.bomberman;
 
+import uet.oop.bomberman.audio.Audio;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Message;
 import uet.oop.bomberman.entities.bomb.Bomb;
@@ -111,6 +112,7 @@ public class Board implements IRender {
 	}
 	
 	public void endGame() {
+		Audio.playEnd();
 		_screenToShow = 1;
 		_game.resetScreenDelay();
 		_game.pause();

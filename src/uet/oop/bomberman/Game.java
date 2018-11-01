@@ -1,5 +1,7 @@
 package uet.oop.bomberman;
 
+import uet.oop.bomberman.audio.Audio;
+import uet.oop.bomberman.debug.Debug;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.gui.Frame;
 import uet.oop.bomberman.input.Keyboard;
@@ -109,6 +111,10 @@ public class Game extends Canvas {
 	}
 	
 	public void start() {
+
+		Debug.Log("play bg music");
+		Audio.playBackground();
+
 		_running = true;
 		
 		long  lastTime = System.nanoTime();

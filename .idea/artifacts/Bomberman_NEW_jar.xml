@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Bomberman_NEW:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/Bomberman_NEW_jar</output-path>
+    <root id="archive" name="Bomberman_NEW.jar">
+      <element id="module-output" name="Bomberman_NEW" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jl1.0.jar" path-in-jar="/" />
+      <element id="library" level="module" name="res" module-name="Bomberman_NEW" />
+      <element id="file-copy" path="$PROJECT_DIR$/jl1.0.jar" />
+    </root>
+  </artifact>
+</component>

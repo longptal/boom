@@ -2,11 +2,13 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
+import uet.oop.bomberman.debug.Debug;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Message;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.Character;
+import uet.oop.bomberman.entities.character.Direction;
 import uet.oop.bomberman.entities.character.enemy.ai.AI;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
@@ -79,6 +81,41 @@ public abstract class Enemy extends Character {
 		// TODO: sử dụng canMove() để kiểm tra xem có thể di chuyển tới điểm đã tính toán hay không
 		// TODO: sử dụng move() để di chuyển
 		// TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
+		int xa =0, ya = 0;
+
+
+		if(_steps <= 0) {
+			_steps = MAX_STEPS;
+			_direction = _ai.calculateDirection();
+		}
+
+
+
+		int dir = Direction.getIntFromDirection(_direction);
+		switch (dir) {
+			case 0:
+				--ya;
+				break;
+			case 1:
+				++xa;
+				break;
+			case 2:
+				++ya;
+				break;
+			case 3:
+				--xa;
+				break;
+		}
+
+		if(canMove(xa, ya)) {
+			move(xa*_speed, ya*_speed);
+			_steps -= 1;
+			_moving = true;
+		} else {
+			_steps = 0;
+			_moving = false;
+		}
+
 	}
 	
 	@Override
@@ -87,17 +124,19 @@ public abstract class Enemy extends Character {
 		_y += ya;
 		_x += xa;
 	}
-	
-	@Override
-	public boolean canMove(double x, double y) {
-		// TODO: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
-		return false;
-	}
 
 	@Override
 	public boolean collide(Entity e) {
 		// TODO: xử lý va chạm với Flame
 		// TODO: xử lý va chạm với Bomber
+		if(e instanceof  Bomber) {
+			((Bomber) e).kill();
+			return false;
+		}
+		if(e instanceof Flame) {
+			kill();
+			return false;
+		}
 		return true;
 	}
 	

@@ -3,6 +3,7 @@ package uet.oop.bomberman.entities.character;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.AnimatedEntitiy;
+import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Screen;
 
 /**
@@ -11,7 +12,7 @@ import uet.oop.bomberman.graphics.Screen;
 public abstract class Character extends AnimatedEntitiy {
 	
 	protected Board _board;
-	protected int _direction = -1;
+	protected Direction _direction = Direction.nill;
 	protected boolean _alive = true;
 	protected boolean _moving = false;
 	public int _timeAfter = 40;
@@ -51,7 +52,41 @@ public abstract class Character extends AnimatedEntitiy {
 	 * @param y
 	 * @return
 	 */
-	protected abstract boolean canMove(double x, double y);
+	protected boolean canMove(double x, double y){
+		double cx1 = _x + x;
+		double cy1 = _y + y - Game.TILES_SIZE;
+		double cx2 = cx1, cy2 = cy1;
+		Entity e1, e2;
+		double epsilon = _sprite.SIZE -3;
+		switch (_direction) {
+			case left:
+
+				cy2 = cy1 + epsilon;
+				break;
+			case right:
+
+				cx1 += epsilon;
+				cx2 = cx1;
+				cy2 +=epsilon;
+				break;
+
+			case down:
+				cy1 += epsilon;
+				cy2 = cy1;
+				cx2 += epsilon;
+				break;
+
+			case up:
+				cx2 += epsilon;
+				break;
+			default:
+
+				break;
+		}
+		e1 = _board.getEntity(cx1 / Game.TILES_SIZE, cy1 / Game.TILES_SIZE, this);
+		e2 = _board.getEntity(cx2 / Game.TILES_SIZE, cy2 / Game.TILES_SIZE, this);
+		return e1.collide(this) && e2.collide(this);
+	}
 
 	protected double getXMessage() {
 		return (_x * Game.SCALE) + (_sprite.SIZE / 2 * Game.SCALE);

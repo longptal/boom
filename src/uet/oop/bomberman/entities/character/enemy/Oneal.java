@@ -3,8 +3,11 @@ package uet.oop.bomberman.entities.character.enemy;
 
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
+import uet.oop.bomberman.entities.character.Direction;
 import uet.oop.bomberman.entities.character.enemy.ai.AIMedium;
 import uet.oop.bomberman.graphics.Sprite;
+
+import java.util.zip.DeflaterInputStream;
 
 public class Oneal extends Enemy {
 	
@@ -19,7 +22,8 @@ public class Oneal extends Enemy {
 	
 	@Override
 	protected void chooseSprite() {
-		switch(_direction) {
+		int dir = Direction.getIntFromDirection(_direction);
+		switch(dir) {
 			case 0:
 			case 1:
 				if(_moving)

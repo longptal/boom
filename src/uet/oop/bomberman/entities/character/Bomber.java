@@ -1,12 +1,18 @@
 package uet.oop.bomberman.entities.character;
 
+import sun.util.resources.cldr.bas.CalendarData_bas_CM;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
+import uet.oop.bomberman.debug.Debug;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.bomb.Bomb;
+import uet.oop.bomberman.entities.bomb.FlameSegment;
+import uet.oop.bomberman.entities.character.enemy.Enemy;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.input.Keyboard;
+import uet.oop.bomberman.level.Coordinates;
 
 import java.util.Iterator;
 import java.util.List;
@@ -73,10 +79,18 @@ public class Bomber extends Character {
         // TODO: _timeBetweenPutBombs dùng để ngăn chặn Bomber đặt 2 Bomb cùng tại 1 vị trí trong 1 khoảng thời gian quá ngắn
         // TODO: nếu 3 điều kiện trên thỏa mãn thì thực hiện đặt bom bằng placeBomb()
         // TODO: sau khi đặt, nhớ giảm số lượng Bomb Rate và reset _timeBetweenPutBombs về 0
+
+            if(_input.space && Game.getBombRate() >= 1 && _timeBetweenPutBombs <= 0) {
+                placeBomb(Coordinates.pixelToTile(_x), Coordinates.pixelToTile(_y - Game.TILES_SIZE));
+                Game.addBombRate(-1);
+                _timeBetweenPutBombs = 30;
+                Debug.Log("booms number: " + Game.getBombRate());
+            }
     }
 
     protected void placeBomb(int x, int y) {
         // TODO: thực hiện tạo đối tượng bom, đặt vào vị trí (x, y)
+        _board.addBomb(new Bomb(x, y, _board));
     }
 
     private void clearBombs() {
@@ -111,30 +125,51 @@ public class Bomber extends Character {
     protected void calculateMove() {
         // TODO: xử lý nhận tín hiệu điều khiển hướng đi từ _input và gọi move() để thực hiện di chuyển
         // TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
-    }
+        int xa = 0, ya = 0;
+        if (_input.up) ya--;
+        if (_input.down) ya++;
+        if (_input.left) xa--;
+        if (_input.right) xa++;
 
-    @Override
-    public boolean canMove(double x, double y) {
-        // TODO: kiểm tra có đối tượng tại vị trí chuẩn bị di chuyển đến và có thể di chuyển tới đó hay không
-        return false;
+        if (xa != 0 || ya != 0) {
+            move(xa * Game.getBomberSpeed(), ya * Game.getBomberSpeed());
+            _moving = true;
+        } else {
+            _moving = false;
+        }
     }
 
     @Override
     public void move(double xa, double ya) {
         // TODO: sử dụng canMove() để kiểm tra xem có thể di chuyển tới điểm đã tính toán hay không và thực hiện thay đổi tọa độ _x, _y
         // TODO: nhớ cập nhật giá trị _direction sau khi di chuyển
+        if (xa > 0) _direction = Direction.right;
+        if (xa < 0) _direction = Direction.left;
+        if (ya > 0) _direction = Direction.down;
+        if (ya < 0) _direction = Direction.up;
+
+        if (canMove(xa, ya)) { //separate the moves for the player can slide when is colliding
+            _x += xa;
+            _y += ya;
+        }
     }
 
     @Override
     public boolean collide(Entity e) {
         // TODO: xử lý va chạm với Flame
         // TODO: xử lý va chạm với Enemy
-
+        if(e instanceof FlameSegment) {
+            kill();
+        }
+        if(e instanceof Enemy) {
+            kill();
+        }
         return true;
     }
 
     private void chooseSprite() {
-        switch (_direction) {
+        int dir = Direction.getIntFromDirection(_direction);
+        switch (dir) {
             case 0:
                 _sprite = Sprite.player_up;
                 if (_moving) {

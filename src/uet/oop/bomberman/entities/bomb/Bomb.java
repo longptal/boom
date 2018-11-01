@@ -1,8 +1,11 @@
 package uet.oop.bomberman.entities.bomb;
 
 import uet.oop.bomberman.Board;
+import uet.oop.bomberman.Game;
+import uet.oop.bomberman.audio.Audio;
 import uet.oop.bomberman.entities.AnimatedEntitiy;
 import uet.oop.bomberman.entities.Entity;
+import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -72,11 +75,21 @@ public class Bomb extends AnimatedEntitiy {
      * Xử lý Bomb nổ
      */
 	protected void explode() {
+		Audio.playBoombEffect();
 		_exploded = true;
-		
+		_allowedToPassThru = true;
+		_flames = new Flame[4];
+		for(int i = 0; i < _flames.length; ++i) {
+			_flames[i] = new Flame((int) _x, (int) _y, i, Game.getBombRadius(), _board);
+		}
+
+
 		// TODO: xử lý khi Character đứng tại vị trí Bomb
 		
 		// TODO: tạo các Flame
+	}
+	public  void explodeAuto() {
+		_timeToExplode = 0;
 	}
 	
 	public FlameSegment flameAt(int x, int y) {
@@ -94,6 +107,12 @@ public class Bomb extends AnimatedEntitiy {
 	@Override
 	public boolean collide(Entity e) {
         // TODO: xử lý khi Bomber đi ra sau khi vừa đặt bom (_allowedToPassThru)
+		if(e instanceof Bomber) {
+			if(_allowedToPassThru) {
+//				_allowedToPassThru = false;
+				return true;
+			}
+		}
         // TODO: xử lý va chạm với Flame của Bomb khác
         return false;
 	}
