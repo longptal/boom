@@ -57,7 +57,7 @@ public abstract class Character extends AnimatedEntitiy {
 		double cy1 = _y + y - Game.TILES_SIZE;
 		double cx2 = cx1, cy2 = cy1;
 		Entity e1, e2;
-		double epsilon = _sprite.SIZE -3;
+		double epsilon = _sprite.SIZE -1 ;
 		switch (_direction) {
 			case left:
 

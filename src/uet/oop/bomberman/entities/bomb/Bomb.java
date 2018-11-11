@@ -3,11 +3,14 @@ package uet.oop.bomberman.entities.bomb;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.audio.Audio;
+import uet.oop.bomberman.debug.Debug;
 import uet.oop.bomberman.entities.AnimatedEntitiy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
+
+import java.util.List;
 
 public class Bomb extends AnimatedEntitiy {
 
@@ -85,7 +88,14 @@ public class Bomb extends AnimatedEntitiy {
 
 
 		// TODO: xử lý khi Character đứng tại vị trí Bomb
-		
+		Bomber bomber = _board.getBomber();
+		if(bomber.getXTile() == (int)_x && bomber.getYTile() == (int)_y) {
+			bomber.kill();
+		}
+		Bomb b = _board.getBombAt(_x, _y);
+		if(b != null) {
+			b.explodeAuto();
+		}
 		// TODO: tạo các Flame
 	}
 	public  void explodeAuto() {

@@ -121,7 +121,7 @@ public class Board implements IRender {
 	public boolean detectNoEnemies() {
 		int total = 0;
 		for (int i = 0; i < _characters.size(); i++) {
-			if(_characters.get(i) instanceof Bomber == false)
+			if(!(_characters.get(i) instanceof Bomber))
 				++total;
 		}
 		
@@ -352,6 +352,10 @@ public class Board implements IRender {
 
 	public int getHeight() {
 		return _levelLoader.getHeight();
+	}
+
+	public void restartLevel() {
+		loadLevel(_levelLoader.getLevel());
 	}
 	
 }

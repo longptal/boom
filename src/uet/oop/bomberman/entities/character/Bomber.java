@@ -80,12 +80,12 @@ public class Bomber extends Character {
         // TODO: nếu 3 điều kiện trên thỏa mãn thì thực hiện đặt bom bằng placeBomb()
         // TODO: sau khi đặt, nhớ giảm số lượng Bomb Rate và reset _timeBetweenPutBombs về 0
 
-            if(_input.space && Game.getBombRate() >= 1 && _timeBetweenPutBombs <= 0) {
-                placeBomb(Coordinates.pixelToTile(_x), Coordinates.pixelToTile(_y - Game.TILES_SIZE));
-                Game.addBombRate(-1);
-                _timeBetweenPutBombs = 30;
-                Debug.Log("booms number: " + Game.getBombRate());
-            }
+        if (_input.space && Game.getBombRate() >= 1 && _timeBetweenPutBombs <= 0) {
+            placeBomb(Coordinates.pixelToTile(_x), Coordinates.pixelToTile(_y - Game.TILES_SIZE));
+            Game.addBombRate(-1);
+            _timeBetweenPutBombs = 30;
+            Debug.Log("booms number: " + Game.getBombRate());
+        }
     }
 
     protected void placeBomb(int x, int y) {
@@ -117,7 +117,13 @@ public class Bomber extends Character {
     protected void afterKill() {
         if (_timeAfter > 0) --_timeAfter;
         else {
-            _board.endGame();
+            if (_bombs.size() == 0) {
+
+//                if (_board.getLives() == 0)
+//                    _board.endGame();
+//                else
+                    _board.restartLevel();
+            }
         }
     }
 
@@ -151,6 +157,65 @@ public class Bomber extends Character {
         if (canMove(xa, ya)) { //separate the moves for the player can slide when is colliding
             _x += xa;
             _y += ya;
+        } else {
+            specialMove(xa, ya);
+        }
+    }
+
+    private void specialMove(double x, double y) {
+        double cx1 = _x + x;
+        double cy1 = _y + y - Game.TILES_SIZE;
+        double cx2 = cx1, cy2 = cy1;
+        double epsilon = _sprite.SIZE;
+        int deltaEpsilon = 8;
+        switch (_direction) {
+            case left:
+
+                cy2 = cy1 + epsilon;
+                if (((int) cy1) % 16 >= (Game.TILES_SIZE - deltaEpsilon)) {
+                    _y = (((int) cy1) / 16 + 2) * Game.TILES_SIZE;
+                }
+                if (((int) cy2) % 16 <= deltaEpsilon) {
+                    _y = ((int) cy2) / 16 * Game.TILES_SIZE;
+                }
+                break;
+            case right:
+
+                cx1 += epsilon;
+                cx2 = cx1;
+                cy2 += epsilon;
+                if (((int) cy1) % 16 >= (Game.TILES_SIZE - deltaEpsilon)) {
+                    _y = (((int) cy1) / 16 + 2) * Game.TILES_SIZE;
+                }
+                if (((int) cy2) % 16 <= deltaEpsilon) {
+                    _y = ((int) cy2) / 16 * Game.TILES_SIZE;
+                }
+                break;
+
+            case down:
+                cy1 += epsilon;
+                cy2 = cy1;
+                cx2 += epsilon;
+                if (((int) cx1) % 16 >= (Game.TILES_SIZE - deltaEpsilon)) {
+                    _x = (((int) cx1) / 16 + 1) * Game.TILES_SIZE;
+                }
+                if (((int) cx2) % 16 <= deltaEpsilon) {
+                    _x = (((int) cx2) / 16 - 1) * Game.TILES_SIZE;
+                }
+                break;
+
+            case up:
+                cx2 += epsilon;
+                if (((int) cx1) % 16 >= (Game.TILES_SIZE - deltaEpsilon)) {
+                    _x = (((int) cx1) / 16 + 1) * Game.TILES_SIZE;
+                }
+                if (((int) cx2) % 16 <= deltaEpsilon) {
+                    _x = (((int) cx2) / 16 - 1) * Game.TILES_SIZE;
+                }
+                break;
+            default:
+
+                break;
         }
     }
 
@@ -158,10 +223,10 @@ public class Bomber extends Character {
     public boolean collide(Entity e) {
         // TODO: xử lý va chạm với Flame
         // TODO: xử lý va chạm với Enemy
-        if(e instanceof FlameSegment) {
+        if (e instanceof FlameSegment) {
             kill();
         }
-        if(e instanceof Enemy) {
+        if (e instanceof Enemy) {
             kill();
         }
         return true;
