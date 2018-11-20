@@ -12,7 +12,7 @@ import java.util.LinkedList;
  */
 public class LayeredEntity extends Entity {
 	
-	protected LinkedList<Entity> _entities = new LinkedList<>();
+	protected LinkedList<Entity> _entities = new LinkedList<Entity>();
 	
 	public LayeredEntity(int x, int y, Entity ... entities) {
 		_x = x;
