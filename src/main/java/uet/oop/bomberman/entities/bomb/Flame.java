@@ -13,7 +13,6 @@ public class Flame extends Entity {
 	protected Board _board;
 	protected Direction _direction;
 	private int _radius;
-	protected int xOrigin, yOrigin;
 	protected FlameSegment[] _flameSegments = new FlameSegment[0];
 
 	/**
@@ -24,8 +23,6 @@ public class Flame extends Entity {
 	 * @param radius độ dài cực đại của Flame
 	 */
 	public Flame(int x, int y, int direction, int radius, Board board) {
-		xOrigin = x;
-		yOrigin = y;
 		_x = x;
 		_y = y;
 		_direction = Direction.getDirectionFromInt(direction);

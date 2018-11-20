@@ -92,10 +92,6 @@ public class Bomb extends AnimatedEntitiy {
 		if(bomber.getXTile() == (int)_x && bomber.getYTile() == (int)_y) {
 			bomber.kill();
 		}
-		Bomb b = _board.getBombAt(_x, _y);
-		if(b != null) {
-			b.explodeAuto();
-		}
 		// TODO: tạo các Flame
 	}
 	public  void explodeAuto() {
