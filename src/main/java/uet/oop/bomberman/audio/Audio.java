@@ -8,11 +8,12 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class Audio {
+
     public static final String bg = "/audio/bg.mp3";
     public static final String boom = "/audio/boom.mp3";
     public static final String won = "/audio/won.mp3";
     public static final String end = "/audio/end.mp3";
-    public static ArrayList<AdvancedPlayer> players = new ArrayList<AdvancedPlayer>();
+    public static ArrayList<AdvancedPlayer> players = new ArrayList<>();
 
     public static void play(String fileName) {
         Thread thread = new Thread(() -> {

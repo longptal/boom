@@ -119,7 +119,12 @@ public class Bomb extends AnimatedEntitiy {
 				return true;
 			}
 		}
+
         // TODO: xử lý va chạm với Flame của Bomb khác
+		if (e instanceof Flame) {
+			this.explode();
+
+		}
         return false;
 	}
 }

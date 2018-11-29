@@ -140,6 +140,7 @@ public class Flame extends Entity {
 		}
 		if(e instanceof Enemy) {
 			((Enemy) e).kill();
+
 		}
 		return true;
 	}

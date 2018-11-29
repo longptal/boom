@@ -3,8 +3,10 @@ package uet.oop.bomberman.entities.bomb;
 import uet.oop.bomberman.debug.Debug;
 import uet.oop.bomberman.entities.Entity;
 
+import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.Character;
 
+import uet.oop.bomberman.entities.character.enemy.Enemy;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 
@@ -71,13 +73,18 @@ public class FlameSegment extends Entity {
 
 	@Override
 	public boolean collide(Entity e) {
-		// TODO: xử lý khi FlameSegment va chạm với Character
-		if(e instanceof Character) {
-			Debug.Log("kill character");
-			((Character) e).kill();
-		}
-		return true;
+		// TODO: xử lý khi FlameSegment va chạm với Characterpublic boolean collide(Entity e) {
+
+			// TODO: xử lý va chạm với Bomber, Enemy. Chú ý đối tượng này có vị trí chính là vị trí của Bomb đã nổ
+			if(e instanceof Bomber) {
+				((Bomber) e).kill();
+			}
+			if(e instanceof Enemy) {
+				((Enemy) e).kill();
+
+			}
+			return true;
 	}
+}
 	
 
-}

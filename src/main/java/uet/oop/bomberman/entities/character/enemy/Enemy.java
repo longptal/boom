@@ -5,7 +5,9 @@ import uet.oop.bomberman.Game;
 import uet.oop.bomberman.debug.Debug;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Message;
+import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.bomb.Flame;
+import uet.oop.bomberman.entities.bomb.FlameSegment;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.Character;
 import uet.oop.bomberman.entities.character.Direction;
@@ -134,7 +136,17 @@ public abstract class Enemy extends Character {
 			return false;
 		}
 		if(e instanceof Flame) {
-			kill();
+			this.kill();
+			return false;
+		}
+
+		if (e instanceof FlameSegment) {
+			this.kill();
+			return false;
+		}
+
+		if (e instanceof Bomb) {
+			this.kill();
 			return false;
 		}
 		return true;
